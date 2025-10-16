@@ -1,0 +1,1 @@
+Welcome to Video Sharing Platform – a lightweight, full-featured YouTube-inspired web application built for modern video sharing and interaction. This project showcases essential video platform functionalities like user authentication, video uploads, commenting, likes, and more – all in a sleek and responsive UI.
