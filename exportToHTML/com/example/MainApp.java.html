@@ -1,0 +1,531 @@
+<html>
+<head>
+<title>MainApp.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cf8e6d;}
+.s1 { color: #bcbec4;}
+.s2 { color: #bcbec4;}
+.s3 { color: #7a7e85;}
+.s4 { color: #6aab73;}
+.s5 { color: #2aacb8;}
+</style>
+</head>
+<body bgcolor="#1e1f22">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+MainApp.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com</span><span class="s2">.</span><span class="s1">example</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">example</span><span class="s2">.</span><span class="s1">dao</span><span class="s2">.*;</span>
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">example</span><span class="s2">.</span><span class="s1">models</span><span class="s2">.*;</span>
+
+<span class="s0">import </span><span class="s1">javax</span><span class="s2">.</span><span class="s1">swing</span><span class="s2">.*;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">awt</span><span class="s2">.*;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">util</span><span class="s2">.</span><span class="s1">List</span><span class="s2">;</span>
+
+<span class="s0">public class </span><span class="s1">MainApp </span><span class="s2">{</span>
+    <span class="s0">private static </span><span class="s1">User loggedInUser</span><span class="s2">;</span>
+
+    <span class="s0">public static void </span><span class="s1">main</span><span class="s2">(</span><span class="s1">String</span><span class="s2">[] </span><span class="s1">args</span><span class="s2">) {</span>
+        <span class="s3">// Create main frame</span>
+        <span class="s1">JFrame frame </span><span class="s2">= </span><span class="s0">new </span><span class="s1">JFrame</span><span class="s2">(</span><span class="s4">&quot;Video Sharing Platform&quot;</span><span class="s2">);</span>
+        <span class="s1">frame</span><span class="s2">.</span><span class="s1">setSize</span><span class="s2">(</span><span class="s5">800</span><span class="s2">, </span><span class="s5">600</span><span class="s2">);</span>
+        <span class="s1">frame</span><span class="s2">.</span><span class="s1">setDefaultCloseOperation</span><span class="s2">(</span><span class="s1">JFrame</span><span class="s2">.</span><span class="s1">EXIT_ON_CLOSE</span><span class="s2">);</span>
+
+        <span class="s1">JPanel panel </span><span class="s2">= </span><span class="s0">new </span><span class="s1">JPanel</span><span class="s2">();</span>
+        <span class="s1">frame</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">panel</span><span class="s2">);</span>
+
+        <span class="s3">// Show the login form</span>
+        <span class="s1">showLoginForm</span><span class="s2">(</span><span class="s1">panel</span><span class="s2">, </span><span class="s1">frame</span><span class="s2">);</span>
+
+        <span class="s1">frame</span><span class="s2">.</span><span class="s1">setVisible</span><span class="s2">(</span><span class="s0">true</span><span class="s2">);</span>
+    <span class="s2">}</span>
+
+    <span class="s0">private static void </span><span class="s1">showLoginForm</span><span class="s2">(</span><span class="s1">JPanel panel</span><span class="s2">, </span><span class="s1">JFrame frame</span><span class="s2">) {</span>
+        <span class="s1">panel</span><span class="s2">.</span><span class="s1">setLayout</span><span class="s2">(</span><span class="s0">null</span><span class="s2">);</span>
+
+        <span class="s1">JLabel usernameLabel </span><span class="s2">= </span><span class="s0">new </span><span class="s1">JLabel</span><span class="s2">(</span><span class="s4">&quot;Username:&quot;</span><span class="s2">);</span>
+        <span class="s1">usernameLabel</span><span class="s2">.</span><span class="s1">setBounds</span><span class="s2">(</span><span class="s5">250</span><span class="s2">, </span><span class="s5">200</span><span class="s2">, </span><span class="s5">100</span><span class="s2">, </span><span class="s5">25</span><span class="s2">);</span>
+        <span class="s1">panel</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">usernameLabel</span><span class="s2">);</span>
+
+        <span class="s1">JTextField usernameField </span><span class="s2">= </span><span class="s0">new </span><span class="s1">JTextField</span><span class="s2">(</span><span class="s5">20</span><span class="s2">);</span>
+        <span class="s1">usernameField</span><span class="s2">.</span><span class="s1">setBounds</span><span class="s2">(</span><span class="s5">350</span><span class="s2">, </span><span class="s5">200</span><span class="s2">, </span><span class="s5">200</span><span class="s2">, </span><span class="s5">25</span><span class="s2">);</span>
+        <span class="s1">panel</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">usernameField</span><span class="s2">);</span>
+
+        <span class="s1">JLabel passwordLabel </span><span class="s2">= </span><span class="s0">new </span><span class="s1">JLabel</span><span class="s2">(</span><span class="s4">&quot;Password:&quot;</span><span class="s2">);</span>
+        <span class="s1">passwordLabel</span><span class="s2">.</span><span class="s1">setBounds</span><span class="s2">(</span><span class="s5">250</span><span class="s2">, </span><span class="s5">250</span><span class="s2">, </span><span class="s5">100</span><span class="s2">, </span><span class="s5">25</span><span class="s2">);</span>
+        <span class="s1">panel</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">passwordLabel</span><span class="s2">);</span>
+
+        <span class="s1">JPasswordField passwordField </span><span class="s2">= </span><span class="s0">new </span><span class="s1">JPasswordField</span><span class="s2">(</span><span class="s5">20</span><span class="s2">);</span>
+        <span class="s1">passwordField</span><span class="s2">.</span><span class="s1">setBounds</span><span class="s2">(</span><span class="s5">350</span><span class="s2">, </span><span class="s5">250</span><span class="s2">, </span><span class="s5">200</span><span class="s2">, </span><span class="s5">25</span><span class="s2">);</span>
+        <span class="s1">panel</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">passwordField</span><span class="s2">);</span>
+
+        <span class="s1">JButton loginButton </span><span class="s2">= </span><span class="s0">new </span><span class="s1">JButton</span><span class="s2">(</span><span class="s4">&quot;Login&quot;</span><span class="s2">);</span>
+        <span class="s1">loginButton</span><span class="s2">.</span><span class="s1">setBounds</span><span class="s2">(</span><span class="s5">350</span><span class="s2">, </span><span class="s5">300</span><span class="s2">, </span><span class="s5">100</span><span class="s2">, </span><span class="s5">25</span><span class="s2">);</span>
+        <span class="s1">panel</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">loginButton</span><span class="s2">);</span>
+
+        <span class="s3">// Add the Register Button</span>
+        <span class="s1">JButton registerButton </span><span class="s2">= </span><span class="s0">new </span><span class="s1">JButton</span><span class="s2">(</span><span class="s4">&quot;Register&quot;</span><span class="s2">);</span>
+        <span class="s1">registerButton</span><span class="s2">.</span><span class="s1">setBounds</span><span class="s2">(</span><span class="s5">350</span><span class="s2">, </span><span class="s5">350</span><span class="s2">, </span><span class="s5">100</span><span class="s2">, </span><span class="s5">25</span><span class="s2">);</span>
+        <span class="s1">panel</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">registerButton</span><span class="s2">);</span>
+
+        <span class="s1">registerButton</span><span class="s2">.</span><span class="s1">addActionListener</span><span class="s2">(</span><span class="s1">e -&gt; showRegistrationForm</span><span class="s2">(</span><span class="s1">panel</span><span class="s2">));</span>
+
+        <span class="s1">loginButton</span><span class="s2">.</span><span class="s1">addActionListener</span><span class="s2">(</span><span class="s1">e -&gt; </span><span class="s2">{</span>
+            <span class="s1">String username </span><span class="s2">= </span><span class="s1">usernameField</span><span class="s2">.</span><span class="s1">getText</span><span class="s2">();</span>
+            <span class="s1">String password </span><span class="s2">= </span><span class="s0">new </span><span class="s1">String</span><span class="s2">(</span><span class="s1">passwordField</span><span class="s2">.</span><span class="s1">getPassword</span><span class="s2">());</span>
+            <span class="s1">loggedInUser </span><span class="s2">= </span><span class="s1">authenticateUser</span><span class="s2">(</span><span class="s1">username</span><span class="s2">, </span><span class="s1">password</span><span class="s2">);</span>
+
+            <span class="s0">if </span><span class="s2">(</span><span class="s1">loggedInUser </span><span class="s2">!= </span><span class="s0">null</span><span class="s2">) {</span>
+                <span class="s1">JOptionPane</span><span class="s2">.</span><span class="s1">showMessageDialog</span><span class="s2">(</span><span class="s1">panel</span><span class="s2">, </span><span class="s4">&quot;Login successful!&quot;</span><span class="s2">);</span>
+                <span class="s1">panel</span><span class="s2">.</span><span class="s1">removeAll</span><span class="s2">();</span>
+                <span class="s1">displayVideos</span><span class="s2">(</span><span class="s1">panel</span><span class="s2">);</span>
+                <span class="s1">panel</span><span class="s2">.</span><span class="s1">revalidate</span><span class="s2">();</span>
+                <span class="s1">panel</span><span class="s2">.</span><span class="s1">repaint</span><span class="s2">();</span>
+            <span class="s2">} </span><span class="s0">else </span><span class="s2">{</span>
+                <span class="s1">JOptionPane</span><span class="s2">.</span><span class="s1">showMessageDialog</span><span class="s2">(</span><span class="s1">panel</span><span class="s2">, </span><span class="s4">&quot;Invalid username or password.&quot;</span><span class="s2">);</span>
+            <span class="s2">}</span>
+        <span class="s2">});</span>
+    <span class="s2">}</span>
+
+    <span class="s0">private static void </span><span class="s1">showRegistrationForm</span><span class="s2">(</span><span class="s1">JPanel panel</span><span class="s2">) {</span>
+        <span class="s1">panel</span><span class="s2">.</span><span class="s1">removeAll</span><span class="s2">();</span>
+        <span class="s1">panel</span><span class="s2">.</span><span class="s1">setLayout</span><span class="s2">(</span><span class="s0">null</span><span class="s2">);</span>
+
+        <span class="s1">JLabel usernameLabel </span><span class="s2">= </span><span class="s0">new </span><span class="s1">JLabel</span><span class="s2">(</span><span class="s4">&quot;Username:&quot;</span><span class="s2">);</span>
+        <span class="s1">usernameLabel</span><span class="s2">.</span><span class="s1">setBounds</span><span class="s2">(</span><span class="s5">250</span><span class="s2">, </span><span class="s5">200</span><span class="s2">, </span><span class="s5">100</span><span class="s2">, </span><span class="s5">25</span><span class="s2">);</span>
+        <span class="s1">panel</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">usernameLabel</span><span class="s2">);</span>
+
+        <span class="s1">JTextField usernameField </span><span class="s2">= </span><span class="s0">new </span><span class="s1">JTextField</span><span class="s2">(</span><span class="s5">20</span><span class="s2">);</span>
+        <span class="s1">usernameField</span><span class="s2">.</span><span class="s1">setBounds</span><span class="s2">(</span><span class="s5">350</span><span class="s2">, </span><span class="s5">200</span><span class="s2">, </span><span class="s5">200</span><span class="s2">, </span><span class="s5">25</span><span class="s2">);</span>
+        <span class="s1">panel</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">usernameField</span><span class="s2">);</span>
+
+        <span class="s1">JLabel passwordLabel </span><span class="s2">= </span><span class="s0">new </span><span class="s1">JLabel</span><span class="s2">(</span><span class="s4">&quot;Password:&quot;</span><span class="s2">);</span>
+        <span class="s1">passwordLabel</span><span class="s2">.</span><span class="s1">setBounds</span><span class="s2">(</span><span class="s5">250</span><span class="s2">, </span><span class="s5">250</span><span class="s2">, </span><span class="s5">100</span><span class="s2">, </span><span class="s5">25</span><span class="s2">);</span>
+        <span class="s1">panel</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">passwordLabel</span><span class="s2">);</span>
+
+        <span class="s1">JPasswordField passwordField </span><span class="s2">= </span><span class="s0">new </span><span class="s1">JPasswordField</span><span class="s2">(</span><span class="s5">20</span><span class="s2">);</span>
+        <span class="s1">passwordField</span><span class="s2">.</span><span class="s1">setBounds</span><span class="s2">(</span><span class="s5">350</span><span class="s2">, </span><span class="s5">250</span><span class="s2">, </span><span class="s5">200</span><span class="s2">, </span><span class="s5">25</span><span class="s2">);</span>
+        <span class="s1">panel</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">passwordField</span><span class="s2">);</span>
+
+        <span class="s1">JLabel emailLabel </span><span class="s2">= </span><span class="s0">new </span><span class="s1">JLabel</span><span class="s2">(</span><span class="s4">&quot;Email:&quot;</span><span class="s2">);</span>
+        <span class="s1">emailLabel</span><span class="s2">.</span><span class="s1">setBounds</span><span class="s2">(</span><span class="s5">250</span><span class="s2">, </span><span class="s5">300</span><span class="s2">, </span><span class="s5">100</span><span class="s2">, </span><span class="s5">25</span><span class="s2">);</span>
+        <span class="s1">panel</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">emailLabel</span><span class="s2">);</span>
+
+        <span class="s1">JTextField emailField </span><span class="s2">= </span><span class="s0">new </span><span class="s1">JTextField</span><span class="s2">(</span><span class="s5">20</span><span class="s2">);</span>
+        <span class="s1">emailField</span><span class="s2">.</span><span class="s1">setBounds</span><span class="s2">(</span><span class="s5">350</span><span class="s2">, </span><span class="s5">300</span><span class="s2">, </span><span class="s5">200</span><span class="s2">, </span><span class="s5">25</span><span class="s2">);</span>
+        <span class="s1">panel</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">emailField</span><span class="s2">);</span>
+
+        <span class="s1">JButton registerButton </span><span class="s2">= </span><span class="s0">new </span><span class="s1">JButton</span><span class="s2">(</span><span class="s4">&quot;Register&quot;</span><span class="s2">);</span>
+        <span class="s1">registerButton</span><span class="s2">.</span><span class="s1">setBounds</span><span class="s2">(</span><span class="s5">350</span><span class="s2">, </span><span class="s5">350</span><span class="s2">, </span><span class="s5">100</span><span class="s2">, </span><span class="s5">25</span><span class="s2">);</span>
+        <span class="s1">panel</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">registerButton</span><span class="s2">);</span>
+
+        <span class="s3">// Add Back to Login Page Button</span>
+        <span class="s1">JButton backButton </span><span class="s2">= </span><span class="s0">new </span><span class="s1">JButton</span><span class="s2">(</span><span class="s4">&quot;Back&quot;</span><span class="s2">);</span>
+        <span class="s1">backButton</span><span class="s2">.</span><span class="s1">setBounds</span><span class="s2">(</span><span class="s5">350</span><span class="s2">, </span><span class="s5">400</span><span class="s2">, </span><span class="s5">100</span><span class="s2">, </span><span class="s5">25</span><span class="s2">);</span>
+        <span class="s1">panel</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">backButton</span><span class="s2">);</span>
+
+        <span class="s3">// Back button logic</span>
+        <span class="s1">backButton</span><span class="s2">.</span><span class="s1">addActionListener</span><span class="s2">(</span><span class="s1">e -&gt; </span><span class="s2">{</span>
+            <span class="s1">panel</span><span class="s2">.</span><span class="s1">removeAll</span><span class="s2">(); </span><span class="s3">// Clear current panel components</span>
+            <span class="s1">showLoginForm</span><span class="s2">(</span><span class="s1">panel</span><span class="s2">, (</span><span class="s1">JFrame</span><span class="s2">) </span><span class="s1">SwingUtilities</span><span class="s2">.</span><span class="s1">getWindowAncestor</span><span class="s2">(</span><span class="s1">panel</span><span class="s2">));</span>
+            <span class="s1">panel</span><span class="s2">.</span><span class="s1">revalidate</span><span class="s2">(); </span><span class="s3">// Refresh the panel</span>
+            <span class="s1">panel</span><span class="s2">.</span><span class="s1">repaint</span><span class="s2">();   </span><span class="s3">// Repaint the panel</span>
+        <span class="s2">});</span>
+
+        <span class="s1">registerButton</span><span class="s2">.</span><span class="s1">addActionListener</span><span class="s2">(</span><span class="s1">e -&gt; </span><span class="s2">{</span>
+            <span class="s1">String username </span><span class="s2">= </span><span class="s1">usernameField</span><span class="s2">.</span><span class="s1">getText</span><span class="s2">();</span>
+            <span class="s1">String password </span><span class="s2">= </span><span class="s0">new </span><span class="s1">String</span><span class="s2">(</span><span class="s1">passwordField</span><span class="s2">.</span><span class="s1">getPassword</span><span class="s2">());</span>
+            <span class="s1">String email </span><span class="s2">= </span><span class="s1">emailField</span><span class="s2">.</span><span class="s1">getText</span><span class="s2">();</span>
+
+            <span class="s0">if </span><span class="s2">(</span><span class="s1">username</span><span class="s2">.</span><span class="s1">isEmpty</span><span class="s2">() || </span><span class="s1">password</span><span class="s2">.</span><span class="s1">isEmpty</span><span class="s2">() || </span><span class="s1">email</span><span class="s2">.</span><span class="s1">isEmpty</span><span class="s2">()) {</span>
+                <span class="s1">JOptionPane</span><span class="s2">.</span><span class="s1">showMessageDialog</span><span class="s2">(</span><span class="s1">panel</span><span class="s2">, </span><span class="s4">&quot;Please fill in all fields.&quot;</span><span class="s2">);</span>
+                <span class="s0">return</span><span class="s2">;</span>
+            <span class="s2">}</span>
+
+            <span class="s0">if </span><span class="s2">(!</span><span class="s1">email</span><span class="s2">.</span><span class="s1">contains</span><span class="s2">(</span><span class="s4">&quot;@&quot;</span><span class="s2">)) {</span>
+                <span class="s1">JOptionPane</span><span class="s2">.</span><span class="s1">showMessageDialog</span><span class="s2">(</span><span class="s1">panel</span><span class="s2">, </span><span class="s4">&quot;Invalid email address.&quot;</span><span class="s2">);</span>
+                <span class="s0">return</span><span class="s2">;</span>
+            <span class="s2">}</span>
+
+            <span class="s0">if </span><span class="s2">(!</span><span class="s1">email</span><span class="s2">.</span><span class="s1">contains</span><span class="s2">(</span><span class="s4">&quot;.com&quot;</span><span class="s2">)) {</span>
+                <span class="s1">JOptionPane</span><span class="s2">.</span><span class="s1">showMessageDialog</span><span class="s2">(</span><span class="s1">panel</span><span class="s2">, </span><span class="s4">&quot;Invalid email address.&quot;</span><span class="s2">);</span>
+                <span class="s0">return</span><span class="s2">;</span>
+            <span class="s2">}</span>
+
+
+            <span class="s0">boolean </span><span class="s1">success </span><span class="s2">= </span><span class="s1">UserDAO</span><span class="s2">.</span><span class="s1">registerUser</span><span class="s2">(</span><span class="s1">username</span><span class="s2">, </span><span class="s1">password</span><span class="s2">, </span><span class="s1">email</span><span class="s2">);</span>
+            <span class="s0">if </span><span class="s2">(</span><span class="s1">success</span><span class="s2">) {</span>
+                <span class="s1">JOptionPane</span><span class="s2">.</span><span class="s1">showMessageDialog</span><span class="s2">(</span><span class="s1">panel</span><span class="s2">, </span><span class="s4">&quot;Registration successful!&quot;</span><span class="s2">);</span>
+                <span class="s1">showLoginForm</span><span class="s2">(</span><span class="s1">panel</span><span class="s2">, (</span><span class="s1">JFrame</span><span class="s2">) </span><span class="s1">SwingUtilities</span><span class="s2">.</span><span class="s1">getWindowAncestor</span><span class="s2">(</span><span class="s1">panel</span><span class="s2">));</span>
+            <span class="s2">} </span><span class="s0">else </span><span class="s2">{</span>
+                <span class="s1">JOptionPane</span><span class="s2">.</span><span class="s1">showMessageDialog</span><span class="s2">(</span><span class="s1">panel</span><span class="s2">, </span><span class="s4">&quot;Registration failed. Username might already exist.&quot;</span><span class="s2">);</span>
+            <span class="s2">}</span>
+        <span class="s2">});</span>
+
+        <span class="s1">panel</span><span class="s2">.</span><span class="s1">revalidate</span><span class="s2">();</span>
+        <span class="s1">panel</span><span class="s2">.</span><span class="s1">repaint</span><span class="s2">();</span>
+    <span class="s2">}</span>
+
+    <span class="s0">private static </span><span class="s1">User authenticateUser</span><span class="s2">(</span><span class="s1">String username</span><span class="s2">, </span><span class="s1">String password</span><span class="s2">) {</span>
+        <span class="s0">try </span><span class="s2">(</span><span class="s1">var conn </span><span class="s2">= </span><span class="s1">DatabaseConnection</span><span class="s2">.</span><span class="s1">getConnection</span><span class="s2">();</span>
+             <span class="s1">var stmt </span><span class="s2">= </span><span class="s1">conn</span><span class="s2">.</span><span class="s1">prepareStatement</span><span class="s2">(</span><span class="s4">&quot;SELECT * FROM users WHERE username = ? AND password = ?&quot;</span><span class="s2">)) {</span>
+
+            <span class="s1">stmt</span><span class="s2">.</span><span class="s1">setString</span><span class="s2">(</span><span class="s5">1</span><span class="s2">, </span><span class="s1">username</span><span class="s2">);</span>
+            <span class="s1">stmt</span><span class="s2">.</span><span class="s1">setString</span><span class="s2">(</span><span class="s5">2</span><span class="s2">, </span><span class="s1">password</span><span class="s2">);</span>
+
+            <span class="s1">var rs </span><span class="s2">= </span><span class="s1">stmt</span><span class="s2">.</span><span class="s1">executeQuery</span><span class="s2">();</span>
+            <span class="s0">if </span><span class="s2">(</span><span class="s1">rs</span><span class="s2">.</span><span class="s1">next</span><span class="s2">()) {</span>
+                <span class="s0">return new </span><span class="s1">User</span><span class="s2">(</span>
+                        <span class="s1">rs</span><span class="s2">.</span><span class="s1">getInt</span><span class="s2">(</span><span class="s4">&quot;id&quot;</span><span class="s2">),</span>
+                        <span class="s1">rs</span><span class="s2">.</span><span class="s1">getString</span><span class="s2">(</span><span class="s4">&quot;username&quot;</span><span class="s2">),</span>
+                        <span class="s1">rs</span><span class="s2">.</span><span class="s1">getString</span><span class="s2">(</span><span class="s4">&quot;password&quot;</span><span class="s2">),</span>
+                        <span class="s1">rs</span><span class="s2">.</span><span class="s1">getString</span><span class="s2">(</span><span class="s4">&quot;email&quot;</span><span class="s2">)</span>
+                <span class="s2">);</span>
+            <span class="s2">}</span>
+        <span class="s2">} </span><span class="s0">catch </span><span class="s2">(</span><span class="s1">Exception e</span><span class="s2">) {</span>
+            <span class="s1">System</span><span class="s2">.</span><span class="s1">err</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s4">&quot;Error during authentication: &quot; </span><span class="s2">+ </span><span class="s1">e</span><span class="s2">.</span><span class="s1">getMessage</span><span class="s2">());</span>
+        <span class="s2">}</span>
+        <span class="s0">return null</span><span class="s2">;</span>
+    <span class="s2">}</span>
+
+    <span class="s0">private static void </span><span class="s1">showUploadForm</span><span class="s2">(</span><span class="s1">JPanel panel</span><span class="s2">) {</span>
+        <span class="s1">panel</span><span class="s2">.</span><span class="s1">removeAll</span><span class="s2">(); </span><span class="s3">// Clear the previous components</span>
+        <span class="s1">panel</span><span class="s2">.</span><span class="s1">setLayout</span><span class="s2">(</span><span class="s0">null</span><span class="s2">);</span>
+
+        <span class="s1">JLabel titleLabel </span><span class="s2">= </span><span class="s0">new </span><span class="s1">JLabel</span><span class="s2">(</span><span class="s4">&quot;Title:&quot;</span><span class="s2">);</span>
+        <span class="s1">titleLabel</span><span class="s2">.</span><span class="s1">setBounds</span><span class="s2">(</span><span class="s5">250</span><span class="s2">, </span><span class="s5">200</span><span class="s2">, </span><span class="s5">100</span><span class="s2">, </span><span class="s5">25</span><span class="s2">);</span>
+        <span class="s1">panel</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">titleLabel</span><span class="s2">);</span>
+
+        <span class="s1">JTextField titleField </span><span class="s2">= </span><span class="s0">new </span><span class="s1">JTextField</span><span class="s2">(</span><span class="s5">20</span><span class="s2">);</span>
+        <span class="s1">titleField</span><span class="s2">.</span><span class="s1">setBounds</span><span class="s2">(</span><span class="s5">350</span><span class="s2">, </span><span class="s5">200</span><span class="s2">, </span><span class="s5">200</span><span class="s2">, </span><span class="s5">25</span><span class="s2">);</span>
+        <span class="s1">panel</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">titleField</span><span class="s2">);</span>
+
+        <span class="s1">JLabel descriptionLabel </span><span class="s2">= </span><span class="s0">new </span><span class="s1">JLabel</span><span class="s2">(</span><span class="s4">&quot;Description:&quot;</span><span class="s2">);</span>
+        <span class="s1">descriptionLabel</span><span class="s2">.</span><span class="s1">setBounds</span><span class="s2">(</span><span class="s5">250</span><span class="s2">, </span><span class="s5">250</span><span class="s2">, </span><span class="s5">100</span><span class="s2">, </span><span class="s5">25</span><span class="s2">);</span>
+        <span class="s1">panel</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">descriptionLabel</span><span class="s2">);</span>
+
+        <span class="s1">JTextField descriptionField </span><span class="s2">= </span><span class="s0">new </span><span class="s1">JTextField</span><span class="s2">(</span><span class="s5">50</span><span class="s2">);</span>
+        <span class="s1">descriptionField</span><span class="s2">.</span><span class="s1">setBounds</span><span class="s2">(</span><span class="s5">350</span><span class="s2">, </span><span class="s5">250</span><span class="s2">, </span><span class="s5">200</span><span class="s2">, </span><span class="s5">25</span><span class="s2">);</span>
+        <span class="s1">panel</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">descriptionField</span><span class="s2">);</span>
+
+        <span class="s1">JLabel fileLabel </span><span class="s2">= </span><span class="s0">new </span><span class="s1">JLabel</span><span class="s2">(</span><span class="s4">&quot;Select Video:&quot;</span><span class="s2">);</span>
+        <span class="s1">fileLabel</span><span class="s2">.</span><span class="s1">setBounds</span><span class="s2">(</span><span class="s5">250</span><span class="s2">, </span><span class="s5">300</span><span class="s2">, </span><span class="s5">100</span><span class="s2">, </span><span class="s5">25</span><span class="s2">);</span>
+        <span class="s1">panel</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">fileLabel</span><span class="s2">);</span>
+
+        <span class="s1">JButton fileButton </span><span class="s2">= </span><span class="s0">new </span><span class="s1">JButton</span><span class="s2">(</span><span class="s4">&quot;Browse&quot;</span><span class="s2">);</span>
+        <span class="s1">fileButton</span><span class="s2">.</span><span class="s1">setBounds</span><span class="s2">(</span><span class="s5">350</span><span class="s2">, </span><span class="s5">300</span><span class="s2">, </span><span class="s5">100</span><span class="s2">, </span><span class="s5">25</span><span class="s2">);</span>
+        <span class="s1">panel</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">fileButton</span><span class="s2">);</span>
+
+        <span class="s1">JLabel selectedFileLabel </span><span class="s2">= </span><span class="s0">new </span><span class="s1">JLabel</span><span class="s2">(</span><span class="s4">&quot;No file selected&quot;</span><span class="s2">);</span>
+        <span class="s1">selectedFileLabel</span><span class="s2">.</span><span class="s1">setBounds</span><span class="s2">(</span><span class="s5">460</span><span class="s2">, </span><span class="s5">300</span><span class="s2">, </span><span class="s5">300</span><span class="s2">, </span><span class="s5">25</span><span class="s2">);</span>
+        <span class="s1">panel</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">selectedFileLabel</span><span class="s2">);</span>
+
+        <span class="s0">final </span><span class="s1">String</span><span class="s2">[] </span><span class="s1">selectedFilePath </span><span class="s2">= {</span><span class="s0">null</span><span class="s2">};</span>
+
+        <span class="s1">fileButton</span><span class="s2">.</span><span class="s1">addActionListener</span><span class="s2">(</span><span class="s1">e -&gt; </span><span class="s2">{</span>
+            <span class="s1">JFileChooser fileChooser </span><span class="s2">= </span><span class="s0">new </span><span class="s1">JFileChooser</span><span class="s2">();</span>
+            <span class="s0">int </span><span class="s1">returnValue </span><span class="s2">= </span><span class="s1">fileChooser</span><span class="s2">.</span><span class="s1">showOpenDialog</span><span class="s2">(</span><span class="s0">null</span><span class="s2">);</span>
+            <span class="s0">if </span><span class="s2">(</span><span class="s1">returnValue </span><span class="s2">== </span><span class="s1">JFileChooser</span><span class="s2">.</span><span class="s1">APPROVE_OPTION</span><span class="s2">) {</span>
+                <span class="s1">selectedFilePath</span><span class="s2">[</span><span class="s5">0</span><span class="s2">] = </span><span class="s1">fileChooser</span><span class="s2">.</span><span class="s1">getSelectedFile</span><span class="s2">().</span><span class="s1">getAbsolutePath</span><span class="s2">();</span>
+                <span class="s1">selectedFileLabel</span><span class="s2">.</span><span class="s1">setText</span><span class="s2">(</span><span class="s1">fileChooser</span><span class="s2">.</span><span class="s1">getSelectedFile</span><span class="s2">().</span><span class="s1">getName</span><span class="s2">());</span>
+            <span class="s2">}</span>
+        <span class="s2">});</span>
+
+        <span class="s1">JButton uploadButton </span><span class="s2">= </span><span class="s0">new </span><span class="s1">JButton</span><span class="s2">(</span><span class="s4">&quot;Upload&quot;</span><span class="s2">);</span>
+        <span class="s1">uploadButton</span><span class="s2">.</span><span class="s1">setBounds</span><span class="s2">(</span><span class="s5">350</span><span class="s2">, </span><span class="s5">350</span><span class="s2">, </span><span class="s5">100</span><span class="s2">, </span><span class="s5">25</span><span class="s2">);</span>
+        <span class="s1">panel</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">uploadButton</span><span class="s2">);</span>
+
+        <span class="s1">uploadButton</span><span class="s2">.</span><span class="s1">addActionListener</span><span class="s2">(</span><span class="s1">e -&gt; </span><span class="s2">{</span>
+            <span class="s1">String title </span><span class="s2">= </span><span class="s1">titleField</span><span class="s2">.</span><span class="s1">getText</span><span class="s2">();</span>
+            <span class="s1">String description </span><span class="s2">= </span><span class="s1">descriptionField</span><span class="s2">.</span><span class="s1">getText</span><span class="s2">();</span>
+
+            <span class="s0">if </span><span class="s2">(</span><span class="s1">selectedFilePath</span><span class="s2">[</span><span class="s5">0</span><span class="s2">] == </span><span class="s0">null</span><span class="s2">) {</span>
+                <span class="s1">JOptionPane</span><span class="s2">.</span><span class="s1">showMessageDialog</span><span class="s2">(</span><span class="s1">panel</span><span class="s2">, </span><span class="s4">&quot;Please select a video file.&quot;</span><span class="s2">);</span>
+                <span class="s0">return</span><span class="s2">;</span>
+            <span class="s2">}</span>
+
+            <span class="s0">if </span><span class="s2">(</span><span class="s1">title</span><span class="s2">.</span><span class="s1">isEmpty</span><span class="s2">() || </span><span class="s1">description</span><span class="s2">.</span><span class="s1">isEmpty</span><span class="s2">()) {</span>
+                <span class="s1">JOptionPane</span><span class="s2">.</span><span class="s1">showMessageDialog</span><span class="s2">(</span><span class="s1">panel</span><span class="s2">, </span><span class="s4">&quot;Please fill in all fields.&quot;</span><span class="s2">);</span>
+                <span class="s0">return</span><span class="s2">;</span>
+            <span class="s2">}</span>
+
+            <span class="s1">VideoDAO</span><span class="s2">.</span><span class="s1">uploadVideo</span><span class="s2">(</span><span class="s1">loggedInUser</span><span class="s2">.</span><span class="s1">getId</span><span class="s2">(), </span><span class="s1">title</span><span class="s2">, </span><span class="s1">description</span><span class="s2">, </span><span class="s1">selectedFilePath</span><span class="s2">[</span><span class="s5">0</span><span class="s2">]);</span>
+            <span class="s1">JOptionPane</span><span class="s2">.</span><span class="s1">showMessageDialog</span><span class="s2">(</span><span class="s1">panel</span><span class="s2">, </span><span class="s4">&quot;Video uploaded successfully!&quot;</span><span class="s2">);</span>
+            <span class="s1">panel</span><span class="s2">.</span><span class="s1">removeAll</span><span class="s2">();</span>
+            <span class="s1">displayVideos</span><span class="s2">(</span><span class="s1">panel</span><span class="s2">); </span><span class="s3">// Go back to the main screen</span>
+            <span class="s1">panel</span><span class="s2">.</span><span class="s1">revalidate</span><span class="s2">();</span>
+            <span class="s1">panel</span><span class="s2">.</span><span class="s1">repaint</span><span class="s2">();</span>
+        <span class="s2">});</span>
+
+        <span class="s3">// Add Back Button</span>
+        <span class="s1">JButton backButton </span><span class="s2">= </span><span class="s0">new </span><span class="s1">JButton</span><span class="s2">(</span><span class="s4">&quot;Back&quot;</span><span class="s2">);</span>
+        <span class="s1">backButton</span><span class="s2">.</span><span class="s1">setBounds</span><span class="s2">(</span><span class="s5">350</span><span class="s2">, </span><span class="s5">400</span><span class="s2">, </span><span class="s5">100</span><span class="s2">, </span><span class="s5">25</span><span class="s2">);</span>
+        <span class="s1">panel</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">backButton</span><span class="s2">);</span>
+
+        <span class="s1">backButton</span><span class="s2">.</span><span class="s1">addActionListener</span><span class="s2">(</span><span class="s1">e -&gt; </span><span class="s2">{</span>
+            <span class="s1">panel</span><span class="s2">.</span><span class="s1">removeAll</span><span class="s2">();</span>
+            <span class="s1">displayVideos</span><span class="s2">(</span><span class="s1">panel</span><span class="s2">); </span><span class="s3">// Redirect to the video display page</span>
+            <span class="s1">panel</span><span class="s2">.</span><span class="s1">revalidate</span><span class="s2">();</span>
+            <span class="s1">panel</span><span class="s2">.</span><span class="s1">repaint</span><span class="s2">();</span>
+        <span class="s2">});</span>
+
+        <span class="s1">panel</span><span class="s2">.</span><span class="s1">revalidate</span><span class="s2">();</span>
+        <span class="s1">panel</span><span class="s2">.</span><span class="s1">repaint</span><span class="s2">();</span>
+    <span class="s2">}</span>
+
+    <span class="s0">private static void </span><span class="s1">displayVideos</span><span class="s2">(</span><span class="s1">JPanel panel</span><span class="s2">) {</span>
+        <span class="s1">panel</span><span class="s2">.</span><span class="s1">removeAll</span><span class="s2">();</span>
+        <span class="s1">panel</span><span class="s2">.</span><span class="s1">setLayout</span><span class="s2">(</span><span class="s0">new </span><span class="s1">BorderLayout</span><span class="s2">());</span>
+
+        <span class="s3">// Create a top panel with the Upload button and Profile button</span>
+        <span class="s1">JPanel topPanel </span><span class="s2">= </span><span class="s0">new </span><span class="s1">JPanel</span><span class="s2">(</span><span class="s0">new </span><span class="s1">BorderLayout</span><span class="s2">());</span>
+
+        <span class="s1">JButton uploadButton </span><span class="s2">= </span><span class="s0">new </span><span class="s1">JButton</span><span class="s2">(</span><span class="s4">&quot;Upload Video&quot;</span><span class="s2">);</span>
+        <span class="s1">uploadButton</span><span class="s2">.</span><span class="s1">setAlignmentX</span><span class="s2">(</span><span class="s1">Component</span><span class="s2">.</span><span class="s1">LEFT_ALIGNMENT</span><span class="s2">);</span>
+        <span class="s1">topPanel</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">uploadButton</span><span class="s2">, </span><span class="s1">BorderLayout</span><span class="s2">.</span><span class="s1">WEST</span><span class="s2">);</span>
+
+        <span class="s1">JButton profileButton </span><span class="s2">= </span><span class="s0">new </span><span class="s1">JButton</span><span class="s2">(</span><span class="s4">&quot;Profile&quot;</span><span class="s2">);</span>
+        <span class="s1">profileButton</span><span class="s2">.</span><span class="s1">setAlignmentX</span><span class="s2">(</span><span class="s1">Component</span><span class="s2">.</span><span class="s1">RIGHT_ALIGNMENT</span><span class="s2">);</span>
+        <span class="s1">topPanel</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">profileButton</span><span class="s2">, </span><span class="s1">BorderLayout</span><span class="s2">.</span><span class="s1">EAST</span><span class="s2">);</span>
+
+        <span class="s1">uploadButton</span><span class="s2">.</span><span class="s1">addActionListener</span><span class="s2">(</span><span class="s1">e -&gt; showUploadForm</span><span class="s2">(</span><span class="s1">panel</span><span class="s2">));</span>
+        <span class="s1">profileButton</span><span class="s2">.</span><span class="s1">addActionListener</span><span class="s2">(</span><span class="s1">e -&gt; showProfileManagement</span><span class="s2">(</span><span class="s1">panel</span><span class="s2">));</span>
+
+        <span class="s3">// Create the scrollable video display</span>
+        <span class="s1">JPanel videoContainer </span><span class="s2">= </span><span class="s0">new </span><span class="s1">JPanel</span><span class="s2">();</span>
+        <span class="s1">videoContainer</span><span class="s2">.</span><span class="s1">setLayout</span><span class="s2">(</span><span class="s0">new </span><span class="s1">GridBagLayout</span><span class="s2">());</span>
+        <span class="s1">JScrollPane scrollPane </span><span class="s2">= </span><span class="s0">new </span><span class="s1">JScrollPane</span><span class="s2">(</span><span class="s1">videoContainer</span><span class="s2">);</span>
+        <span class="s1">scrollPane</span><span class="s2">.</span><span class="s1">setVerticalScrollBarPolicy</span><span class="s2">(</span><span class="s1">JScrollPane</span><span class="s2">.</span><span class="s1">VERTICAL_SCROLLBAR_ALWAYS</span><span class="s2">);</span>
+
+        <span class="s3">// Populate videos</span>
+        <span class="s1">List</span><span class="s2">&lt;</span><span class="s1">Video</span><span class="s2">&gt; </span><span class="s1">videos </span><span class="s2">= </span><span class="s1">VideoDAO</span><span class="s2">.</span><span class="s1">fetchVideos</span><span class="s2">();</span>
+        <span class="s1">GridBagConstraints gbc </span><span class="s2">= </span><span class="s0">new </span><span class="s1">GridBagConstraints</span><span class="s2">();</span>
+        <span class="s1">gbc</span><span class="s2">.</span><span class="s1">insets </span><span class="s2">= </span><span class="s0">new </span><span class="s1">Insets</span><span class="s2">(</span><span class="s5">10</span><span class="s2">, </span><span class="s5">10</span><span class="s2">, </span><span class="s5">10</span><span class="s2">, </span><span class="s5">10</span><span class="s2">); </span><span class="s3">// Add padding between video cards</span>
+        <span class="s1">gbc</span><span class="s2">.</span><span class="s1">gridx </span><span class="s2">= </span><span class="s5">0</span><span class="s2">;</span>
+        <span class="s1">gbc</span><span class="s2">.</span><span class="s1">gridy </span><span class="s2">= </span><span class="s5">0</span><span class="s2">;</span>
+
+        <span class="s0">for </span><span class="s2">(</span><span class="s1">Video video </span><span class="s2">: </span><span class="s1">videos</span><span class="s2">) {</span>
+            <span class="s1">JPanel videoCard </span><span class="s2">= </span><span class="s0">new </span><span class="s1">JPanel</span><span class="s2">();</span>
+            <span class="s1">videoCard</span><span class="s2">.</span><span class="s1">setLayout</span><span class="s2">(</span><span class="s0">new </span><span class="s1">BoxLayout</span><span class="s2">(</span><span class="s1">videoCard</span><span class="s2">, </span><span class="s1">BoxLayout</span><span class="s2">.</span><span class="s1">Y_AXIS</span><span class="s2">));</span>
+            <span class="s1">videoCard</span><span class="s2">.</span><span class="s1">setBorder</span><span class="s2">(</span><span class="s1">BorderFactory</span><span class="s2">.</span><span class="s1">createCompoundBorder</span><span class="s2">(</span>
+                    <span class="s1">BorderFactory</span><span class="s2">.</span><span class="s1">createLineBorder</span><span class="s2">(</span><span class="s1">Color</span><span class="s2">.</span><span class="s1">GRAY</span><span class="s2">, </span><span class="s5">1</span><span class="s2">),</span>
+                    <span class="s1">BorderFactory</span><span class="s2">.</span><span class="s1">createEmptyBorder</span><span class="s2">(</span><span class="s5">10</span><span class="s2">, </span><span class="s5">10</span><span class="s2">, </span><span class="s5">10</span><span class="s2">, </span><span class="s5">10</span><span class="s2">)</span>
+            <span class="s2">));</span>
+            <span class="s1">videoCard</span><span class="s2">.</span><span class="s1">setBackground</span><span class="s2">(</span><span class="s1">Color</span><span class="s2">.</span><span class="s1">WHITE</span><span class="s2">);</span>
+
+            <span class="s1">JLabel titleLabel </span><span class="s2">= </span><span class="s0">new </span><span class="s1">JLabel</span><span class="s2">(</span><span class="s1">video</span><span class="s2">.</span><span class="s1">getTitle</span><span class="s2">());</span>
+            <span class="s1">titleLabel</span><span class="s2">.</span><span class="s1">setFont</span><span class="s2">(</span><span class="s0">new </span><span class="s1">Font</span><span class="s2">(</span><span class="s4">&quot;Arial&quot;</span><span class="s2">, </span><span class="s1">Font</span><span class="s2">.</span><span class="s1">BOLD</span><span class="s2">, </span><span class="s5">16</span><span class="s2">));</span>
+            <span class="s1">titleLabel</span><span class="s2">.</span><span class="s1">setAlignmentX</span><span class="s2">(</span><span class="s1">Component</span><span class="s2">.</span><span class="s1">CENTER_ALIGNMENT</span><span class="s2">);</span>
+
+            <span class="s1">JLabel descriptionLabel </span><span class="s2">= </span><span class="s0">new </span><span class="s1">JLabel</span><span class="s2">(</span><span class="s4">&quot;&lt;html&gt;&lt;p style='width:200px;'&gt;&quot; </span><span class="s2">+ </span><span class="s1">video</span><span class="s2">.</span><span class="s1">getDescription</span><span class="s2">() + </span><span class="s4">&quot;&lt;/p&gt;&lt;/html&gt;&quot;</span><span class="s2">);</span>
+            <span class="s1">descriptionLabel</span><span class="s2">.</span><span class="s1">setFont</span><span class="s2">(</span><span class="s0">new </span><span class="s1">Font</span><span class="s2">(</span><span class="s4">&quot;Arial&quot;</span><span class="s2">, </span><span class="s1">Font</span><span class="s2">.</span><span class="s1">PLAIN</span><span class="s2">, </span><span class="s5">12</span><span class="s2">));</span>
+            <span class="s1">descriptionLabel</span><span class="s2">.</span><span class="s1">setAlignmentX</span><span class="s2">(</span><span class="s1">Component</span><span class="s2">.</span><span class="s1">CENTER_ALIGNMENT</span><span class="s2">);</span>
+
+            <span class="s1">JButton playButton </span><span class="s2">= </span><span class="s0">new </span><span class="s1">JButton</span><span class="s2">(</span><span class="s4">&quot;Play&quot;</span><span class="s2">);</span>
+            <span class="s1">playButton</span><span class="s2">.</span><span class="s1">setAlignmentX</span><span class="s2">(</span><span class="s1">Component</span><span class="s2">.</span><span class="s1">CENTER_ALIGNMENT</span><span class="s2">);</span>
+            <span class="s1">playButton</span><span class="s2">.</span><span class="s1">addActionListener</span><span class="s2">(</span><span class="s1">e -&gt; VideoPlayer</span><span class="s2">.</span><span class="s1">playVideo</span><span class="s2">(</span><span class="s1">video</span><span class="s2">.</span><span class="s1">getVideoUrl</span><span class="s2">()));</span>
+
+            <span class="s1">videoCard</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">titleLabel</span><span class="s2">);</span>
+            <span class="s1">videoCard</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">Box</span><span class="s2">.</span><span class="s1">createRigidArea</span><span class="s2">(</span><span class="s0">new </span><span class="s1">Dimension</span><span class="s2">(</span><span class="s5">0</span><span class="s2">, </span><span class="s5">5</span><span class="s2">)));</span>
+            <span class="s1">videoCard</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">descriptionLabel</span><span class="s2">);</span>
+            <span class="s1">videoCard</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">Box</span><span class="s2">.</span><span class="s1">createRigidArea</span><span class="s2">(</span><span class="s0">new </span><span class="s1">Dimension</span><span class="s2">(</span><span class="s5">0</span><span class="s2">, </span><span class="s5">5</span><span class="s2">)));</span>
+            <span class="s1">videoCard</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">playButton</span><span class="s2">);</span>
+
+            <span class="s1">videoContainer</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">videoCard</span><span class="s2">, </span><span class="s1">gbc</span><span class="s2">);</span>
+            <span class="s1">gbc</span><span class="s2">.</span><span class="s1">gridy</span><span class="s2">++;</span>
+        <span class="s2">}</span>
+
+        <span class="s1">panel</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">topPanel</span><span class="s2">, </span><span class="s1">BorderLayout</span><span class="s2">.</span><span class="s1">NORTH</span><span class="s2">);</span>
+        <span class="s1">panel</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">scrollPane</span><span class="s2">, </span><span class="s1">BorderLayout</span><span class="s2">.</span><span class="s1">CENTER</span><span class="s2">);</span>
+
+        <span class="s1">panel</span><span class="s2">.</span><span class="s1">revalidate</span><span class="s2">();</span>
+        <span class="s1">panel</span><span class="s2">.</span><span class="s1">repaint</span><span class="s2">();</span>
+    <span class="s2">}</span>
+
+    <span class="s0">private static void </span><span class="s1">showProfileManagement</span><span class="s2">(</span><span class="s1">JPanel panel</span><span class="s2">) {</span>
+        <span class="s1">panel</span><span class="s2">.</span><span class="s1">removeAll</span><span class="s2">();</span>
+        <span class="s1">panel</span><span class="s2">.</span><span class="s1">setLayout</span><span class="s2">(</span><span class="s0">null</span><span class="s2">);</span>
+
+        <span class="s1">JLabel headerLabel </span><span class="s2">= </span><span class="s0">new </span><span class="s1">JLabel</span><span class="s2">(</span><span class="s4">&quot;Manage Your Profile&quot;</span><span class="s2">);</span>
+        <span class="s1">headerLabel</span><span class="s2">.</span><span class="s1">setFont</span><span class="s2">(</span><span class="s0">new </span><span class="s1">Font</span><span class="s2">(</span><span class="s4">&quot;Arial&quot;</span><span class="s2">, </span><span class="s1">Font</span><span class="s2">.</span><span class="s1">BOLD</span><span class="s2">, </span><span class="s5">18</span><span class="s2">));</span>
+        <span class="s1">headerLabel</span><span class="s2">.</span><span class="s1">setBounds</span><span class="s2">(</span><span class="s5">250</span><span class="s2">, </span><span class="s5">50</span><span class="s2">, </span><span class="s5">300</span><span class="s2">, </span><span class="s5">30</span><span class="s2">);</span>
+        <span class="s1">panel</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">headerLabel</span><span class="s2">);</span>
+
+        <span class="s1">JLabel usernameLabel </span><span class="s2">= </span><span class="s0">new </span><span class="s1">JLabel</span><span class="s2">(</span><span class="s4">&quot;Username:&quot;</span><span class="s2">);</span>
+        <span class="s1">usernameLabel</span><span class="s2">.</span><span class="s1">setBounds</span><span class="s2">(</span><span class="s5">200</span><span class="s2">, </span><span class="s5">150</span><span class="s2">, </span><span class="s5">100</span><span class="s2">, </span><span class="s5">25</span><span class="s2">);</span>
+        <span class="s1">panel</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">usernameLabel</span><span class="s2">);</span>
+
+        <span class="s1">JTextField usernameField </span><span class="s2">= </span><span class="s0">new </span><span class="s1">JTextField</span><span class="s2">(</span><span class="s1">loggedInUser</span><span class="s2">.</span><span class="s1">getUsername</span><span class="s2">());</span>
+        <span class="s1">usernameField</span><span class="s2">.</span><span class="s1">setBounds</span><span class="s2">(</span><span class="s5">300</span><span class="s2">, </span><span class="s5">150</span><span class="s2">, </span><span class="s5">200</span><span class="s2">, </span><span class="s5">25</span><span class="s2">);</span>
+        <span class="s1">panel</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">usernameField</span><span class="s2">);</span>
+
+        <span class="s1">JLabel passwordLabel </span><span class="s2">= </span><span class="s0">new </span><span class="s1">JLabel</span><span class="s2">(</span><span class="s4">&quot;Password:&quot;</span><span class="s2">);</span>
+        <span class="s1">passwordLabel</span><span class="s2">.</span><span class="s1">setBounds</span><span class="s2">(</span><span class="s5">200</span><span class="s2">, </span><span class="s5">200</span><span class="s2">, </span><span class="s5">100</span><span class="s2">, </span><span class="s5">25</span><span class="s2">);</span>
+        <span class="s1">panel</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">passwordLabel</span><span class="s2">);</span>
+
+        <span class="s1">JPasswordField passwordField </span><span class="s2">= </span><span class="s0">new </span><span class="s1">JPasswordField</span><span class="s2">();</span>
+        <span class="s1">passwordField</span><span class="s2">.</span><span class="s1">setBounds</span><span class="s2">(</span><span class="s5">300</span><span class="s2">, </span><span class="s5">200</span><span class="s2">, </span><span class="s5">200</span><span class="s2">, </span><span class="s5">25</span><span class="s2">);</span>
+        <span class="s1">panel</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">passwordField</span><span class="s2">);</span>
+
+        <span class="s1">JButton saveButton </span><span class="s2">= </span><span class="s0">new </span><span class="s1">JButton</span><span class="s2">(</span><span class="s4">&quot;Save Changes&quot;</span><span class="s2">);</span>
+        <span class="s1">saveButton</span><span class="s2">.</span><span class="s1">setBounds</span><span class="s2">(</span><span class="s5">250</span><span class="s2">, </span><span class="s5">250</span><span class="s2">, </span><span class="s5">150</span><span class="s2">, </span><span class="s5">25</span><span class="s2">);</span>
+        <span class="s1">panel</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">saveButton</span><span class="s2">);</span>
+
+        <span class="s1">JButton backButton </span><span class="s2">= </span><span class="s0">new </span><span class="s1">JButton</span><span class="s2">(</span><span class="s4">&quot;Back to Videos&quot;</span><span class="s2">);</span>
+        <span class="s1">backButton</span><span class="s2">.</span><span class="s1">setBounds</span><span class="s2">(</span><span class="s5">450</span><span class="s2">, </span><span class="s5">250</span><span class="s2">, </span><span class="s5">150</span><span class="s2">, </span><span class="s5">25</span><span class="s2">);</span>
+        <span class="s1">panel</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">backButton</span><span class="s2">);</span>
+
+        <span class="s3">// Save Changes Action</span>
+        <span class="s1">saveButton</span><span class="s2">.</span><span class="s1">addActionListener</span><span class="s2">(</span><span class="s1">e -&gt; </span><span class="s2">{</span>
+            <span class="s1">String newUsername </span><span class="s2">= </span><span class="s1">usernameField</span><span class="s2">.</span><span class="s1">getText</span><span class="s2">();</span>
+            <span class="s1">String newPassword </span><span class="s2">= </span><span class="s0">new </span><span class="s1">String</span><span class="s2">(</span><span class="s1">passwordField</span><span class="s2">.</span><span class="s1">getPassword</span><span class="s2">());</span>
+
+            <span class="s0">if </span><span class="s2">(</span><span class="s1">newUsername</span><span class="s2">.</span><span class="s1">isEmpty</span><span class="s2">() || </span><span class="s1">newPassword</span><span class="s2">.</span><span class="s1">isEmpty</span><span class="s2">()) {</span>
+                <span class="s1">JOptionPane</span><span class="s2">.</span><span class="s1">showMessageDialog</span><span class="s2">(</span><span class="s1">panel</span><span class="s2">, </span><span class="s4">&quot;All fields are required.&quot;</span><span class="s2">);</span>
+                <span class="s0">return</span><span class="s2">;</span>
+            <span class="s2">}</span>
+
+            <span class="s1">loggedInUser</span><span class="s2">.</span><span class="s1">setUsername</span><span class="s2">(</span><span class="s1">newUsername</span><span class="s2">);</span>
+            <span class="s1">loggedInUser</span><span class="s2">.</span><span class="s1">setPassword</span><span class="s2">(</span><span class="s1">newPassword</span><span class="s2">);</span>
+
+            <span class="s1">UserDAO</span><span class="s2">.</span><span class="s1">updateUser</span><span class="s2">(</span><span class="s1">loggedInUser</span><span class="s2">);</span>
+            <span class="s1">JOptionPane</span><span class="s2">.</span><span class="s1">showMessageDialog</span><span class="s2">(</span><span class="s1">panel</span><span class="s2">, </span><span class="s4">&quot;Profile updated successfully!&quot;</span><span class="s2">);</span>
+        <span class="s2">});</span>
+
+        <span class="s3">// Back to Display Videos Action</span>
+        <span class="s1">backButton</span><span class="s2">.</span><span class="s1">addActionListener</span><span class="s2">(</span><span class="s1">e -&gt; </span><span class="s2">{</span>
+            <span class="s1">panel</span><span class="s2">.</span><span class="s1">removeAll</span><span class="s2">();</span>
+            <span class="s1">displayVideos</span><span class="s2">(</span><span class="s1">panel</span><span class="s2">);</span>
+            <span class="s1">panel</span><span class="s2">.</span><span class="s1">revalidate</span><span class="s2">();</span>
+            <span class="s1">panel</span><span class="s2">.</span><span class="s1">repaint</span><span class="s2">();</span>
+        <span class="s2">});</span>
+
+        <span class="s1">panel</span><span class="s2">.</span><span class="s1">revalidate</span><span class="s2">();</span>
+        <span class="s1">panel</span><span class="s2">.</span><span class="s1">repaint</span><span class="s2">();</span>
+    <span class="s2">}</span>
+
+    <span class="s3">// Helper method to display a specific page</span>
+    <span class="s0">private static void </span><span class="s1">displayPage</span><span class="s2">(</span><span class="s1">JPanel panel</span><span class="s2">, </span><span class="s1">List</span><span class="s2">&lt;</span><span class="s1">Video</span><span class="s2">&gt; </span><span class="s1">allVideos</span><span class="s2">, </span><span class="s0">int</span><span class="s2">[] </span><span class="s1">currentPage</span><span class="s2">, </span><span class="s0">int </span><span class="s1">pageSize</span><span class="s2">) {</span>
+        <span class="s1">panel</span><span class="s2">.</span><span class="s1">removeAll</span><span class="s2">();</span>
+        <span class="s1">panel</span><span class="s2">.</span><span class="s1">setLayout</span><span class="s2">(</span><span class="s0">new </span><span class="s1">BoxLayout</span><span class="s2">(</span><span class="s1">panel</span><span class="s2">, </span><span class="s1">BoxLayout</span><span class="s2">.</span><span class="s1">Y_AXIS</span><span class="s2">));</span>
+
+        <span class="s0">int </span><span class="s1">start </span><span class="s2">= </span><span class="s1">currentPage</span><span class="s2">[</span><span class="s5">0</span><span class="s2">] * </span><span class="s1">pageSize</span><span class="s2">;</span>
+        <span class="s0">int </span><span class="s1">end </span><span class="s2">= </span><span class="s1">Math</span><span class="s2">.</span><span class="s1">min</span><span class="s2">(</span><span class="s1">start </span><span class="s2">+ </span><span class="s1">pageSize</span><span class="s2">, </span><span class="s1">allVideos</span><span class="s2">.</span><span class="s1">size</span><span class="s2">());</span>
+        <span class="s1">List</span><span class="s2">&lt;</span><span class="s1">Video</span><span class="s2">&gt; </span><span class="s1">pageVideos </span><span class="s2">= </span><span class="s1">allVideos</span><span class="s2">.</span><span class="s1">subList</span><span class="s2">(</span><span class="s1">start</span><span class="s2">, </span><span class="s1">end</span><span class="s2">);</span>
+
+        <span class="s0">for </span><span class="s2">(</span><span class="s1">Video video </span><span class="s2">: </span><span class="s1">pageVideos</span><span class="s2">) {</span>
+            <span class="s1">JPanel videoPanel </span><span class="s2">= </span><span class="s0">new </span><span class="s1">JPanel</span><span class="s2">();</span>
+            <span class="s1">videoPanel</span><span class="s2">.</span><span class="s1">setLayout</span><span class="s2">(</span><span class="s0">new </span><span class="s1">BoxLayout</span><span class="s2">(</span><span class="s1">videoPanel</span><span class="s2">, </span><span class="s1">BoxLayout</span><span class="s2">.</span><span class="s1">Y_AXIS</span><span class="s2">));</span>
+            <span class="s1">videoPanel</span><span class="s2">.</span><span class="s1">setBorder</span><span class="s2">(</span><span class="s1">BorderFactory</span><span class="s2">.</span><span class="s1">createTitledBorder</span><span class="s2">(</span><span class="s1">video</span><span class="s2">.</span><span class="s1">getTitle</span><span class="s2">()));</span>
+
+            <span class="s1">JLabel descriptionLabel </span><span class="s2">= </span><span class="s0">new </span><span class="s1">JLabel</span><span class="s2">(</span><span class="s1">video</span><span class="s2">.</span><span class="s1">getDescription</span><span class="s2">());</span>
+            <span class="s1">descriptionLabel</span><span class="s2">.</span><span class="s1">setAlignmentX</span><span class="s2">(</span><span class="s1">Component</span><span class="s2">.</span><span class="s1">CENTER_ALIGNMENT</span><span class="s2">);</span>
+            <span class="s1">videoPanel</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">descriptionLabel</span><span class="s2">);</span>
+
+            <span class="s1">JButton playButton </span><span class="s2">= </span><span class="s0">new </span><span class="s1">JButton</span><span class="s2">(</span><span class="s4">&quot;Play Video&quot;</span><span class="s2">);</span>
+            <span class="s1">playButton</span><span class="s2">.</span><span class="s1">setAlignmentX</span><span class="s2">(</span><span class="s1">Component</span><span class="s2">.</span><span class="s1">CENTER_ALIGNMENT</span><span class="s2">);</span>
+            <span class="s1">videoPanel</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">playButton</span><span class="s2">);</span>
+
+            <span class="s1">playButton</span><span class="s2">.</span><span class="s1">addActionListener</span><span class="s2">(</span><span class="s1">e -&gt; VideoPlayer</span><span class="s2">.</span><span class="s1">playVideo</span><span class="s2">(</span><span class="s1">video</span><span class="s2">.</span><span class="s1">getVideoUrl</span><span class="s2">()));</span>
+
+            <span class="s1">JPanel likeDislikePanel </span><span class="s2">= </span><span class="s0">new </span><span class="s1">JPanel</span><span class="s2">();</span>
+            <span class="s1">JButton likeButton </span><span class="s2">= </span><span class="s0">new </span><span class="s1">JButton</span><span class="s2">(</span><span class="s4">&quot;Like (&quot; </span><span class="s2">+ </span><span class="s1">video</span><span class="s2">.</span><span class="s1">getLikes</span><span class="s2">() + </span><span class="s4">&quot;)&quot;</span><span class="s2">);</span>
+            <span class="s1">JButton dislikeButton </span><span class="s2">= </span><span class="s0">new </span><span class="s1">JButton</span><span class="s2">(</span><span class="s4">&quot;Dislike (&quot; </span><span class="s2">+ </span><span class="s1">video</span><span class="s2">.</span><span class="s1">getDislikes</span><span class="s2">() + </span><span class="s4">&quot;)&quot;</span><span class="s2">);</span>
+
+            <span class="s1">likeButton</span><span class="s2">.</span><span class="s1">addActionListener</span><span class="s2">(</span><span class="s1">e -&gt; </span><span class="s2">{</span>
+                <span class="s1">VideoDAO</span><span class="s2">.</span><span class="s1">likeVideo</span><span class="s2">(</span><span class="s1">video</span><span class="s2">.</span><span class="s1">getId</span><span class="s2">());</span>
+                <span class="s1">JOptionPane</span><span class="s2">.</span><span class="s1">showMessageDialog</span><span class="s2">(</span><span class="s1">panel</span><span class="s2">, </span><span class="s4">&quot;You liked this video!&quot;</span><span class="s2">);</span>
+                <span class="s1">displayPage</span><span class="s2">(</span><span class="s1">panel</span><span class="s2">, </span><span class="s1">allVideos</span><span class="s2">, </span><span class="s1">currentPage</span><span class="s2">, </span><span class="s1">pageSize</span><span class="s2">); </span><span class="s3">// Refresh the page</span>
+                <span class="s1">panel</span><span class="s2">.</span><span class="s1">revalidate</span><span class="s2">();</span>
+                <span class="s1">panel</span><span class="s2">.</span><span class="s1">repaint</span><span class="s2">();</span>
+            <span class="s2">});</span>
+
+            <span class="s1">dislikeButton</span><span class="s2">.</span><span class="s1">addActionListener</span><span class="s2">(</span><span class="s1">e -&gt; </span><span class="s2">{</span>
+                <span class="s1">VideoDAO</span><span class="s2">.</span><span class="s1">dislikeVideo</span><span class="s2">(</span><span class="s1">video</span><span class="s2">.</span><span class="s1">getId</span><span class="s2">());</span>
+                <span class="s1">JOptionPane</span><span class="s2">.</span><span class="s1">showMessageDialog</span><span class="s2">(</span><span class="s1">panel</span><span class="s2">, </span><span class="s4">&quot;You disliked this video!&quot;</span><span class="s2">);</span>
+                <span class="s1">displayPage</span><span class="s2">(</span><span class="s1">panel</span><span class="s2">, </span><span class="s1">allVideos</span><span class="s2">, </span><span class="s1">currentPage</span><span class="s2">, </span><span class="s1">pageSize</span><span class="s2">); </span><span class="s3">// Refresh the page</span>
+                <span class="s1">panel</span><span class="s2">.</span><span class="s1">revalidate</span><span class="s2">();</span>
+                <span class="s1">panel</span><span class="s2">.</span><span class="s1">repaint</span><span class="s2">();</span>
+            <span class="s2">});</span>
+
+            <span class="s1">likeDislikePanel</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">likeButton</span><span class="s2">);</span>
+            <span class="s1">likeDislikePanel</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">dislikeButton</span><span class="s2">);</span>
+            <span class="s1">videoPanel</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">likeDislikePanel</span><span class="s2">);</span>
+
+            <span class="s1">panel</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">videoPanel</span><span class="s2">);</span>
+        <span class="s2">}</span>
+
+        <span class="s3">// Pagination controls</span>
+        <span class="s1">JPanel paginationPanel </span><span class="s2">= </span><span class="s0">new </span><span class="s1">JPanel</span><span class="s2">();</span>
+        <span class="s1">JButton prevButton </span><span class="s2">= </span><span class="s0">new </span><span class="s1">JButton</span><span class="s2">(</span><span class="s4">&quot;Previous&quot;</span><span class="s2">);</span>
+        <span class="s1">JButton nextButton </span><span class="s2">= </span><span class="s0">new </span><span class="s1">JButton</span><span class="s2">(</span><span class="s4">&quot;Next&quot;</span><span class="s2">);</span>
+
+        <span class="s1">prevButton</span><span class="s2">.</span><span class="s1">setEnabled</span><span class="s2">(</span><span class="s1">currentPage</span><span class="s2">[</span><span class="s5">0</span><span class="s2">] &gt; </span><span class="s5">0</span><span class="s2">);</span>
+        <span class="s1">nextButton</span><span class="s2">.</span><span class="s1">setEnabled</span><span class="s2">(</span><span class="s1">end </span><span class="s2">&lt; </span><span class="s1">allVideos</span><span class="s2">.</span><span class="s1">size</span><span class="s2">());</span>
+
+        <span class="s1">prevButton</span><span class="s2">.</span><span class="s1">addActionListener</span><span class="s2">(</span><span class="s1">e -&gt; </span><span class="s2">{</span>
+            <span class="s1">currentPage</span><span class="s2">[</span><span class="s5">0</span><span class="s2">]--;</span>
+            <span class="s1">displayPage</span><span class="s2">(</span><span class="s1">panel</span><span class="s2">, </span><span class="s1">allVideos</span><span class="s2">, </span><span class="s1">currentPage</span><span class="s2">, </span><span class="s1">pageSize</span><span class="s2">);</span>
+            <span class="s1">panel</span><span class="s2">.</span><span class="s1">revalidate</span><span class="s2">();</span>
+            <span class="s1">panel</span><span class="s2">.</span><span class="s1">repaint</span><span class="s2">();</span>
+        <span class="s2">});</span>
+
+        <span class="s1">nextButton</span><span class="s2">.</span><span class="s1">addActionListener</span><span class="s2">(</span><span class="s1">e -&gt; </span><span class="s2">{</span>
+            <span class="s1">currentPage</span><span class="s2">[</span><span class="s5">0</span><span class="s2">]++;</span>
+            <span class="s1">displayPage</span><span class="s2">(</span><span class="s1">panel</span><span class="s2">, </span><span class="s1">allVideos</span><span class="s2">, </span><span class="s1">currentPage</span><span class="s2">, </span><span class="s1">pageSize</span><span class="s2">);</span>
+            <span class="s1">panel</span><span class="s2">.</span><span class="s1">revalidate</span><span class="s2">();</span>
+            <span class="s1">panel</span><span class="s2">.</span><span class="s1">repaint</span><span class="s2">();</span>
+        <span class="s2">});</span>
+
+        <span class="s1">paginationPanel</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">prevButton</span><span class="s2">);</span>
+        <span class="s1">paginationPanel</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">nextButton</span><span class="s2">);</span>
+        <span class="s1">panel</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">paginationPanel</span><span class="s2">);</span>
+
+        <span class="s1">panel</span><span class="s2">.</span><span class="s1">revalidate</span><span class="s2">();</span>
+        <span class="s1">panel</span><span class="s2">.</span><span class="s1">repaint</span><span class="s2">();</span>
+    <span class="s2">}</span>
+
+    <span class="s3">// Helper method to display videos</span>
+    <span class="s0">private static void </span><span class="s1">displayVideoResults</span><span class="s2">(</span><span class="s1">JPanel panel</span><span class="s2">, </span><span class="s1">List</span><span class="s2">&lt;</span><span class="s1">Video</span><span class="s2">&gt; </span><span class="s1">videos</span><span class="s2">) {</span>
+        <span class="s1">panel</span><span class="s2">.</span><span class="s1">removeAll</span><span class="s2">();</span>
+
+        <span class="s3">// Redisplay the search bar</span>
+        <span class="s1">JTextField searchField </span><span class="s2">= </span><span class="s0">new </span><span class="s1">JTextField</span><span class="s2">(</span><span class="s5">30</span><span class="s2">);</span>
+        <span class="s1">JButton searchButton </span><span class="s2">= </span><span class="s0">new </span><span class="s1">JButton</span><span class="s2">(</span><span class="s4">&quot;Search&quot;</span><span class="s2">);</span>
+        <span class="s1">JPanel searchPanel </span><span class="s2">= </span><span class="s0">new </span><span class="s1">JPanel</span><span class="s2">();</span>
+        <span class="s1">searchPanel</span><span class="s2">.</span><span class="s1">setLayout</span><span class="s2">(</span><span class="s0">new </span><span class="s1">BoxLayout</span><span class="s2">(</span><span class="s1">searchPanel</span><span class="s2">, </span><span class="s1">BoxLayout</span><span class="s2">.</span><span class="s1">X_AXIS</span><span class="s2">));</span>
+        <span class="s1">searchPanel</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">searchField</span><span class="s2">);</span>
+        <span class="s1">searchPanel</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">searchButton</span><span class="s2">);</span>
+
+        <span class="s1">panel</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">searchPanel</span><span class="s2">);</span>
+
+        <span class="s0">for </span><span class="s2">(</span><span class="s1">Video video </span><span class="s2">: </span><span class="s1">videos</span><span class="s2">) {</span>
+            <span class="s1">JPanel videoPanel </span><span class="s2">= </span><span class="s0">new </span><span class="s1">JPanel</span><span class="s2">();</span>
+            <span class="s1">videoPanel</span><span class="s2">.</span><span class="s1">setLayout</span><span class="s2">(</span><span class="s0">new </span><span class="s1">BoxLayout</span><span class="s2">(</span><span class="s1">videoPanel</span><span class="s2">, </span><span class="s1">BoxLayout</span><span class="s2">.</span><span class="s1">Y_AXIS</span><span class="s2">));</span>
+            <span class="s1">videoPanel</span><span class="s2">.</span><span class="s1">setBorder</span><span class="s2">(</span><span class="s1">BorderFactory</span><span class="s2">.</span><span class="s1">createTitledBorder</span><span class="s2">(</span><span class="s1">video</span><span class="s2">.</span><span class="s1">getTitle</span><span class="s2">()));</span>
+
+            <span class="s1">JLabel descriptionLabel </span><span class="s2">= </span><span class="s0">new </span><span class="s1">JLabel</span><span class="s2">(</span><span class="s1">video</span><span class="s2">.</span><span class="s1">getDescription</span><span class="s2">());</span>
+            <span class="s1">descriptionLabel</span><span class="s2">.</span><span class="s1">setAlignmentX</span><span class="s2">(</span><span class="s1">Component</span><span class="s2">.</span><span class="s1">CENTER_ALIGNMENT</span><span class="s2">);</span>
+            <span class="s1">videoPanel</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">descriptionLabel</span><span class="s2">);</span>
+
+            <span class="s1">JButton playButton </span><span class="s2">= </span><span class="s0">new </span><span class="s1">JButton</span><span class="s2">(</span><span class="s4">&quot;Play Video&quot;</span><span class="s2">);</span>
+            <span class="s1">playButton</span><span class="s2">.</span><span class="s1">setAlignmentX</span><span class="s2">(</span><span class="s1">Component</span><span class="s2">.</span><span class="s1">CENTER_ALIGNMENT</span><span class="s2">);</span>
+            <span class="s1">videoPanel</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">playButton</span><span class="s2">);</span>
+
+            <span class="s1">playButton</span><span class="s2">.</span><span class="s1">addActionListener</span><span class="s2">(</span><span class="s1">e -&gt; VideoPlayer</span><span class="s2">.</span><span class="s1">playVideo</span><span class="s2">(</span><span class="s1">video</span><span class="s2">.</span><span class="s1">getVideoUrl</span><span class="s2">()));</span>
+
+            <span class="s1">panel</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">videoPanel</span><span class="s2">);</span>
+        <span class="s2">}</span>
+
+        <span class="s1">panel</span><span class="s2">.</span><span class="s1">revalidate</span><span class="s2">();</span>
+        <span class="s1">panel</span><span class="s2">.</span><span class="s1">repaint</span><span class="s2">();</span>
+    <span class="s2">}</span>
+
+<span class="s2">}</span>
+</pre>
+</body>
+</html>
